@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Labelled Property Graph Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+            body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* System default font stack */
+    }
+        
+        /* Graph container styling */
+        #graph-container {
+            width: 100%;
+            height: 900px;
+            border: 1px solid lightgray;
+            position: relative; /* Ensure layering works properly */
+        }
+    
+        /* Top bar styling */
+        #top-bar {
+            position: fixed; /* Keep the top bar fixed at the top */
+            top: 0;
+            left: 0;
+            width: 100%; /* Stretch across the full width */
+            background-color: #fff; /* Solid background for readability */
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for clarity */
+            z-index: 1100; /* Higher z-index to ensure it stays above the sidebar */
+            display: flex; /* Flex layout for better alignment */
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Space between elements */
+
+    }
+
+    /* Styling for the form elements inside #top-bar */
+    #top-bar input[type="file"], #top-bar select, #top-bar input[type="checkbox"] {
+        padding: 8px 12px; /* Padding inside inputs and select */
+        font-size: 14px; /* Ensure readability */
+        border: 1px solid #ccc; /* Light border color */
+        border-radius: 4px; /* Rounded corners */
+        margin: 0 10px; /* Space between form elements */
+        background-color: #fafafa; /* Light background for inputs/select */
+        transition: border-color 0.3s ease; /* Smooth transition for focus effect */
+    }
+
+    /* Focus effect for input fields and select */
+    #top-bar input[type="file"]:focus, 
+    #top-bar select:focus, 
+    #top-bar input[type="checkbox"]:focus {
+        border-color: #0056b3; /* Highlight border on focus */
+        outline: none; /* Remove default focus outline */
+    }
+
+    /* Styling for the color palette dropdown */
+    #color-palette-selector {
+        width: auto; /* Let it adjust to content */
+    }
+
+    /* Styling for labels to align them nicely */
+    #top-bar label {
+        font-size: 14px; /* Consistent font size */
+        color: #333; /* Dark color for contrast */
+        font-weight: 500; /* Slightly bold for better readability */
+    }
+
+    /* Checkbox label styling */
+    #top-bar input[type="checkbox"] {
+        margin-left: 5px; /* Small space between checkbox and label */
+    }
+
+    /* Remove default spacing between elements in top bar */
+    #top-bar > * {
+        margin: 0 5px;
+    }
+
+    /* Responsive Design: Make sure top bar elements stack on small screens */
+    @media (max-width: 768px) {
+        #top-bar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        #top-bar input[type="file"],
+        #top-bar select,
+        #top-bar input[type="checkbox"] {
+            margin-bottom: 10px; /* Add spacing between elements when stacked */
+        }
+    }
+        /* Tooltip style overrides */
+        .vis-network .vis-tooltip {
+            max-width: 400px; /* Set the maximum width of the tooltip */
+            white-space: normal !important; /* Override white-space for word-wrap */
+            word-wrap: break-word; /* Ensure long words do not overflow */
+            padding: 10px; /* Add some padding inside the tooltip */
+            border-radius: 5px; /* Optional: rounded corners */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Optional: shadow for better visibility */
+        }
+    
+        /* Sidebar styling */
+        #inspect-sidebar {
+            position: fixed; /* Fixed position ensures it stays on top and in place */
+            top: 45px;
+            right: 0;
+            width: 40%; /* Adjust as needed */
+            height: 900px; /* Full height */
+            background-color: rgba(244, 244, 244, 0.85); /* Semi-transparent background */
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Shadow for better contrast */
+            padding: 15px;
+            overflow-y: scroll; /* Enable scrolling for long content */
+            z-index: 1000; /* Lower z-index than the top bar */
+            display: none; /* Initially hidden */
+            margin-bottom: 20px; /* Add a 20px margin at the bottom */
+        }
+    
+        /* Preformatted text in the sidebar */
+        #inspect-sidebar pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    
+        /* Checkbox styling */
+        #inspect-checkbox {
+            margin-top: 10px;
+        }
+    </style>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js" integrity="sha512-iTgTmIgxyA2YehKNVbzLJx4j9SnuC5ihtRrtxVkXH/9nF3vXBN5YeNQp+6wufBWKD3u+roHVNOvWBMufQnBbug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<div id="top-bar">
+
+    <input type="file" id="file-input" accept=".json, .xlsx" />
+
+
+    <!-- Add a dropdown for color palettes -->
+<label for="color-palette-selector">Color Palette:</label>
+<select id="color-palette-selector">
+    <option value="0">Default Palette</option>
+    <option value="1">Palette 1</option>
+    <option value="2">Palette 2</option>
+    <option value="3">Palette 3</option>
+    <option value="4">Palette 4</option>
+    <option value="5">Palette 5</option>
+    <option value="6">Greyscale</option>
+    <!-- ... Add other palettes as needed ... -->
+</select>
+
+<!-- Inspect Checkbox -->
+<label for="inspect-checkbox">
+    <input type="checkbox" id="inspect-checkbox" /> Inspect
+</label>
+
+</div>
+<!-- Sidebar for inspecting nodes -->
+<div id="inspect-sidebar">
+    <pre id="node-details"></pre>
+    <pre id="relationships-details"></pre>
+</div>
+
+<div id="graph-container"></div>
+
+<script>
+const networkContainer = document.getElementById('graph-container');
+const fileInput = document.getElementById('file-input');
+let cumulativeNodes = new Set();
+let cumulativeEdges = new Set();
+
+let currentColorPaletteIndex = 0; // Normally, this would be set based on user selection
+// An array to hold different color palettes
+const colorPalettes = [
+[    "#FFD700", "#008000", "#1E90FF", "#FF4500", "#800080", "#00CED1", "#6A5ACD", "#FF69B4",
+    "#FFB300", "#556B2F", "#5F9EA0", "#D2691E", "#9932CC", "#20B2AA", "#7B68EE", "#FFC0CB",
+    "#FF8C00", "#2E8B57", "#87CEEB", "#FF6347", "#8A2BE2", "#40E0D0", "#4169E1", "#FF1493",
+    "#FFA07A", "#4682B4", "#9ACD32", "#6B8E23", "#32CD32", "#DA70D6"
+], [
+    "#FFA500", "#228B22", "#00BFFF", "#FF6347", "#9370DB", "#48D1CC", "#7B68EE", "#FFB6C1",
+    "#FF4500", "#006400", "#87CEFA", "#FFA07A", "#8A2BE2", "#40E0D0", "#9ACD32", "#C71585",
+    "#FFD700", "#3CB371", "#4682B4", "#FF69B4", "#6A5ACD", "#5F9EA0", "#32CD32", "#DA70D6",
+    "#FF8C00", "#2E8B57", "#6495ED", "#FA8072", "#9932CC", "#20B2AA"
+], [
+    "#F4A460", "#32CD32", "#4682B4", "#FF4500", "#BA55D3", "#5F9EA0", "#483D8B", "#FF1493",
+    "#DAA520", "#228B22", "#7B68EE", "#FF8C00", "#9400D3", "#3CB371", "#8FBC8B", "#C71585",
+    "#FFFACD", "#66CDAA", "#6495ED", "#FF69B4", "#9370DB", "#AFEEEE", "#CD5C5C", "#7FFF00",
+    "#FFA07A", "#87CEEB", "#6B8E23", "#DB7093", "#20B2AA", "#FFA500"
+],[
+    "#DAA520", "#006400", "#4169E1", "#FF6347", "#8A2BE2", "#20B2AA", "#6A5ACD", "#FF69B4",
+    "#FFD700", "#556B2F", "#1E90FF", "#FF4500", "#9400D3", "#48D1CC", "#7B68EE", "#FFC0CB",
+    "#FF8C00", "#2E8B57", "#87CEFA", "#FFA07A", "#8B008B", "#AFEEEE", "#4169E1", "#FF1493",
+    "#F4A460", "#4682B4", "#98FB98", "#9932CC", "#40E0D0", "#EE82EE"
+], [
+    "#FFD700", "#ADFF2F", "#87CEFA", "#FF7F50", "#9370DB", "#00CED1", "#8A2BE2", "#FF69B4",
+    "#FFA500", "#228B22", "#00BFFF", "#FF6347", "#BA55D3", "#5F9EA0", "#483D8B", "#FF1493",
+    "#DAA520", "#6B8E23", "#1E90FF", "#FF4500", "#9932CC", "#AFEEEE", "#7B68EE", "#FFB6C1",
+    "#FF8C00", "#3CB371", "#6495ED", "#FA8072", "#DA70D6", "#48D1CC"
+], [
+    "#FFD700", "#00FA9A", "#4682B4", "#FF4500", "#9400D3", "#00CED1", "#7B68EE", "#FF1493",
+    "#FFA07A", "#32CD32", "#4169E1", "#FF6347", "#8A2BE2", "#20B2AA", "#6A5ACD", "#FFC0CB",
+    "#FF8C00", "#2E8B57", "#87CEEB", "#D2691E", "#9932CC", "#40E0D0", "#9ACD32", "#FF69B4",
+    "#B8860B", "#66CDAA", "#1E90FF", "#FFB6C1", "#6B8E23", "#EE82EE"
+],
+    [
+    '#B0B0B0', '#888888', '#808080', '#202020', '#101010', '#B8B8B8', '#282828',  '#383838', 
+    '#787878', '#404040', '#C8C8C8', '#484848', '#F0F0F0', '#A0A0A0',  '#080808', '#909090', 
+    '#E0E0E0', '#D8D8D8', '#585858', '#505050', '#D0D0D0',  '#989898', '#303030', '#181818', 
+    '#686868', '#C0C0C0', '#A8A8A8', '#606060',  '#707070', '#E8E8E8'
+]
+];
+
+// Listen for changes in the dropdown selection to update the graph colors
+document.getElementById('color-palette-selector').addEventListener('change', function(e) {
+    const paletteIndex = parseInt(e.target.value, 10);
+    renderGraph(lastGraphData, paletteIndex);
+});
+
+// Add variable to keep track of the last graph data rendered
+let lastGraphData = null;
+
+
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        // Check if the file is Excel or JSON by its extension
+        if(file.name.slice(-5).toLowerCase() === '.xlsx') {
+            // Handle Excel file
+            processExcelFile(file);
+        } else if(file.name.slice(-5).toLowerCase() === '.json') {
+            // Handle JSON file
+            processJsonFile(file);
+        } else {
+            alert('Please upload a JSON or Excel file.');
+        }
+    }
+});
+
+function updateNodeColors(nodes, colorPalette) {
+    // Extract unique labels and sort them
+    const uniqueLabels = Array.from(new Set(nodes.map(node => node.label))).sort();
+
+    // Create a mapping of label to color based on the sorted unique labels and color palette
+    const labelColorMapping = uniqueLabels.reduce((acc, label, index) => {
+        acc[label] = colorPalette[index % colorPalette.length];
+        return acc;
+    }, {});
+
+    // Apply colours to the nodes based on the mapping
+    nodes.forEach(node => {
+        node.color = labelColorMapping[node.label] || "#CCCCCC"; // Fallback color if label isn't found
+    });
+}
+
+function processJsonFile(file) {
+    const reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function(e) {
+        try {
+            const parsedData = JSON.parse(e.target.result);
+            renderGraph(parsedData);
+        } catch (err) {
+            console.error(err);
+            alert("Error parsing JSON file");
+        }
+    };
+}
+
+function processExcelFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        // Assuming sheets are named 'nodes' and 'edges'
+        const nodesSheet = workbook.Sheets['nodes'];
+        const edgesSheet = workbook.Sheets['edges'];
+
+        // Insert your transformation logic here
+        //convert from xlsx to graph json
+
+
+        // Assuming nodesSheetJson and edgesSheetJson are the parsed Excel data for nodes & edges
+        const nodesSheetJson = XLSX.utils.sheet_to_json(nodesSheet);
+        const edgesSheetJson = XLSX.utils.sheet_to_json(edgesSheet);
+
+        // Assign UUIDs for edges with blank ID
+        edgesSheetJson.forEach(edge => {
+            if (!edge.edge || edge.edge === '') {
+                edge.edge = generateUUID();
+            }
+        });
+
+        validateNodes(nodesSheetJson, edgesSheetJson);
+
+        // Convert nodes into the required JSON structure
+        const nodes = nodesSheetJson.map(node => {
+            let properties = {};
+            for(let key in node) {
+                if (node.hasOwnProperty(key) && key !== "node" && key !== "label" && key !== "add properties -->" && node[key] !== null) {
+                    properties[key] = node[key];
+                }
+            }
+            return {
+                "id": node.node,
+                "label": node.label,
+                "properties": properties
+            };
+        });
+
+        // Convert edges into the required JSON structure
+        const edges = edgesSheetJson.map(edge => {
+            let properties = {};
+            for(let key in edge) {
+                if (edge.hasOwnProperty(key) && key !== "edge" && key !== "source" && key !== "label" && key !== "target" && key !== "add properties -->" && edge[key] !== null) {
+                    properties[key] = edge[key];
+                }
+            }
+            return {
+                "id": edge.edge,
+                "source": edge.source,
+                "label": edge.label,
+                "target": edge.target,
+                "properties": properties
+            };
+        });
+
+        // Combine nodes and edges into a graph
+        const lpgGraph = {
+            "nodes": nodes,
+            "edges": edges
+        };
+
+        // Output summary to console
+        console.log(`Graph creation completed with ${nodes.length} nodes and ${edges.length} edges.`);
+
+        
+        let transformedData = lpgGraph; // The object where we'll store the transformed nodes and edges data
+        
+        // Additional transformation functions and code goes here (from the previous messages)
+        
+        // Render the graph with the transformed data
+        renderGraph(transformedData);
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function renderGraph(graphData, paletteIndex = 0) {
+
+    const palette = colorPalettes[paletteIndex] || colorPalettes[0]; // Use default if index is out of range   
+    // Make sure node colors are updated based on the selected palette
+    updateNodeColors(graphData.nodes, palette);
+
+    const nodesArray = graphData.nodes.map(node => {
+        // Ensure node.properties is defined before accessing properties
+        const hasProperties = node.properties && typeof node.properties === 'object';
+        const packageName = hasProperties && node.label === 'package' ? node.properties.name : null;
+        const title = hasProperties ? node.properties.title : null;
+        const name = hasProperties ? node.properties.name : null;
+
+        var displayLabel = '';
+        // Build the displayLabel based on available properties
+        if (packageName && title) {
+            displayLabel = packageName + ': ' + title;
+        } else if (title) {
+            displayLabel = title;
+        } else if (name) {
+            displayLabel = name;
+        } else {
+            displayLabel = node.id.toString();
+        }
+
+        return {
+            id: node.id,
+            label: displayLabel,
+            title: hasProperties ? formatProperties(node.properties) : "No properties available",
+            color: node.color || "#CCCCCC" // Fallback color
+        };
+    });
+    
+    const edgesArray = graphData.edges.map(edge => {
+        // Plan A and B for edges
+        const edgeLabelKey = edge.label || edge.id.toString();
+        return {
+            from: edge.source,
+            to: edge.target,
+            title: formatProperties(edge.properties),
+            arrows: 'to',
+            color: {
+                color: "#CCCCCC", // Fallback color
+                highlight: "#CCCCCC",
+                hover: "#CCCCCC"
+            }
+        };
+    });
+
+    // Instantiate our network object.
+    const data = {
+        nodes: new vis.DataSet(nodesArray),
+        edges: new vis.DataSet(edgesArray)
+    };
+
+const options = {
+    autoResize: true,
+    height: '100%',
+    width: '100%',
+    layout: {
+        hierarchical: false,
+        improvedLayout: true
+    },
+    physics: {
+        enabled: true,
+        barnesHut: {
+            gravitationalConstant: -120000,
+            centralGravity: 0.05,
+            springLength: 10,
+            springConstant: 0.01,
+            damping: 0.2,
+            avoidOverlap: 0.5
+        },
+        stabilization: { iterations: 400 }
+    },
+    nodes: {
+        shape: 'dot',
+        size: 30,
+        font: {
+            size: 20,
+            face: 'Tahoma'
+        },
+        scaling: {
+            label: {
+                enabled: true
+            }
+        }
+    },
+    edges: {
+        width: 2,
+        font: {
+            size: 14,
+            align: 'horizontal'
+        },
+        color: {
+            inherit: 'from'
+        },
+        smooth: {
+            enabled: true,
+            type: 'continuous',
+            roundness: 0.5
+        }
+    },
+    interaction: {
+        tooltipDelay: 200,
+        hover: true,
+        navigationButtons: true,
+        keyboard: true
+    }
+};
+
+    const network = new vis.Network(networkContainer, data, options);
+
+    // Adding interaction
+    network.on("hoverNode", function(params) {
+        network.canvas.body.container.style.cursor = 'pointer';
+    });
+
+    network.on("blurNode", function(params) {
+        network.canvas.body.container.style.cursor = 'default';
+    });
+
+    network.on("hoverEdge", function(params) {
+        network.canvas.body.container.style.cursor = 'pointer';
+    });
+
+    network.on("blurEdge", function(params) {
+        network.canvas.body.container.style.cursor = 'default';
+    });
+
+    network.on("click", function (params) {
+        const nodeId = params.nodes[0]; // Get the clicked node ID
+        if (nodeId) {
+        displayNodeDetails(nodeId); // Display details in the sidebar
+        }
+
+        console.log('click');
+    });
+     // Store the latest data for re-rendering on palette change
+     lastGraphData = graphData;   
+
+}
+
+
+
+// Create an object to store colors for labels based on the current palette
+const labelColors = {};
+
+// Function to get the color for a label; assigns a new color from the palette if necessary
+function getColorForLabel(label) {
+    if (!labelColors[label]) {
+        const palette = getCurrentColorPalette();
+        const colorIndex = Object.keys(labelColors).length % palette.length;
+        labelColors[label] = palette[colorIndex];
+    }
+    return labelColors[label];
+}
+// Function to get the current color palette
+function getCurrentColorPalette() {
+    return colorPalettes[currentColorPaletteIndex];
+}
+
+    
+// Function that formats the properties for display in tooltips
+function formatProperties(properties) {
+    if (!properties) {
+        // Handle the absence of properties safely
+        return "No properties";
+    }
+    
+    var formattedProperties = [];
+
+    // Handling the 'name' property first, ensuring it is in title case and appears first in the tooltip
+    if (properties.name) {
+        formattedProperties.push("Name: " + properties.name);
+    }
+
+    // Handle other properties
+    for (var prop in properties) {
+        if (prop !== "name") { // Skip the 'name' property as it's already been handled
+            // Prepend "Description: " to the description for clarity
+            const valuePrefix = (prop === "description") ? "Description: " : "";
+            formattedProperties.push(valuePrefix + properties[prop]);
+        }
+    }
+    return formattedProperties.join('\n'); // Use escaped newline character for multi-line tooltip
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+
+// Helper function to generate a UUID
+function generateUUID() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+    );
+}
+
+// Function to validate the existence of source and target nodes for edges
+function validateNodes(nodes, edges) {
+    const nodeIDs = new Set(nodes.map(node => node.node));
+    const missingSources = edges.filter(edge => !nodeIDs.has(edge.source));
+    const missingTargets = edges.filter(edge => !nodeIDs.has(edge.target));
+
+    if (missingSources.length > 0 || missingTargets.length > 0) {
+        let error_message = "The following source or target nodes do not exist in the nodes tab:\n";
+        if (missingSources.length > 0) {
+            error_message += "Missing source nodes: " + missingSources.map(edge => edge.source).join(", ") + "\n";
+        }
+        if (missingTargets.length > 0) {
+            error_message += "Missing target nodes: " + missingTargets.map(edge => edge.target).join(", ") + "\n";
+        }
+        throw new Error(error_message);
+    }
+}
+
+// Get the Inspect checkbox and sidebar elements
+const inspectCheckbox = document.getElementById('inspect-checkbox');
+const inspectSidebar = document.getElementById('inspect-sidebar');
+const nodeDetails = document.getElementById('node-details');
+const relationshipsDetails = document.getElementById('relationships-details');
+
+// Listen for changes to the Inspect checkbox
+inspectCheckbox.addEventListener('change', function() {
+    if (inspectCheckbox.checked) {
+        inspectSidebar.style.display = 'block'; // Show sidebar
+    } else {
+        inspectSidebar.style.display = 'none'; // Hide sidebar
+    }
+});
+
+// Function to display node and relationship details in the sidebar
+function displayNodeDetails(nodeId) {
+    const node = findNodeById(nodeId);
+    const relationships = groupRelationships(nodeId);
+
+    // Display the node object
+    nodeDetails.textContent = `Node Details:\n${JSON.stringify(node, null, 2)}`;
+
+    // Prepare outward and inward relationships details with subheadings
+    let relationshipsText = 'Relationships:\n';
+    relationshipsText += 'Outward relationships:\n';
+    relationshipsText += JSON.stringify(relationships.source, null, 2) + '\n';
+    relationshipsText += 'Inward relationships:\n';
+    relationshipsText += JSON.stringify(relationships.target, null, 2) + '\n' + '\n';
+
+    // Display relationships, grouped by source and target
+    relationshipsDetails.textContent = relationshipsText;
+}
+
+// Function to find a node by its ID
+function findNodeById(nodeId) {
+    return lastGraphData.nodes.find(node => node.id === nodeId);
+}
+
+// Function to group relationships by source and target
+function groupRelationships(nodeId) {
+    const relationships = {
+        source: [],
+        target: []
+    };
+
+    lastGraphData.edges.forEach(edge => {
+        if (edge.source === nodeId) {
+            relationships.source.push(edge);
+        }
+        if (edge.target === nodeId) {
+            relationships.target.push(edge);
+        }
+    });
+
+    return relationships;
+}
+
+
+
+</script>
+</body>
+</html>

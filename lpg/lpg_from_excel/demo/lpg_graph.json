@@ -1,0 +1,679 @@
+{
+  "nodes": [
+    {
+      "id": "Data Science Program",
+      "label": "DataScience",
+      "properties": {
+        "description": "A GDMP System initiative focused on leveraging data science and machine learning for geological insights."
+      }
+    },
+    {
+      "id": "AWS Sagemaker",
+      "label": "DataScience",
+      "properties": {
+        "description": "A cloud platform for building machine learning models, employed by the Data Science Program."
+      }
+    },
+    {
+      "id": "OCR Reports",
+      "label": "DataScience",
+      "properties": {
+        "description": "Digitised documents created through optical character recognition; part of the Data Science Program."
+      }
+    },
+    {
+      "id": "AWS OpenSearch Service",
+      "label": "DataScience",
+      "properties": {
+        "description": "A managed search service used to index and query OCR Reports."
+      }
+    },
+    {
+      "id": "Core Rationalisation Tool",
+      "label": "DataScience",
+      "properties": {
+        "description": "A management tool for optimising resources, derived from AWS Sagemaker."
+      }
+    },
+    {
+      "id": "DevOps / MLOps (TODO)",
+      "label": "DataScience",
+      "properties": {
+        "description": "A proposed project within AWS Sagemaker to streamline development and operations workflows."
+      }
+    },
+    {
+      "id": "OCR Report Index",
+      "label": "DataScience",
+      "properties": {
+        "description": "A structured index facilitating the search and retrieval of OCR reports within AWS OpenSearch Service."
+      }
+    },
+    {
+      "id": "Digital Librarian POC",
+      "label": "DataScience",
+      "properties": {
+        "description": "A proof of concept for an AI"
+      }
+    },
+    {
+      "id": "Value Extraction Research",
+      "label": "DataScience",
+      "properties": {
+        "description": "Initiatives within the Data Science Program to derive meaningful insights from data."
+      }
+    },
+    {
+      "id": "Geoscience ML Projects",
+      "label": "DataScience",
+      "properties": {
+        "description": "Machine learning endeavours that aim to solve geoscience problems, stemming from the Data Science Program."
+      }
+    },
+    {
+      "id": "GDMP System",
+      "label": "GDMP",
+      "properties": {
+        "description": "A system that has initiated various technology projects and resources."
+      }
+    },
+    {
+      "id": "Geoproperties Database",
+      "label": "GeoProps",
+      "properties": {
+        "description": "A database established by GDMP System containing detailed geological property information."
+      }
+    },
+    {
+      "id": "Geoproperties App",
+      "label": "GeoProps",
+      "properties": {
+        "description": "An application supporting the efficient use of the Geoproperties Database."
+      }
+    },
+    {
+      "id": "Redshift Data Warehouse",
+      "label": "GeoProps",
+      "properties": {
+        "description": "A large"
+      }
+    },
+    {
+      "id": "Curated Views",
+      "label": "GeoProps",
+      "properties": {
+        "description": "Specifically tailored data perspectives generated via the Redshift Data Warehouse."
+      }
+    },
+    {
+      "id": "Bulk Uploading Tool",
+      "label": "GeoProps",
+      "properties": {
+        "description": "A tool facilitating mass data input into the Geoproperties App."
+      }
+    },
+    {
+      "id": "External System Integration",
+      "label": "GeoProps",
+      "properties": {
+        "description": "The connection of outside systems with data from Curated Views for broader applications."
+      }
+    },
+    {
+      "id": "GSQ GitHub",
+      "label": "GitHub",
+      "properties": {
+        "description": "A repository of system documentation and lab projects stemming from the GDMP System."
+      }
+    },
+    {
+      "id": "System Documentation",
+      "label": "GitHub",
+      "properties": {
+        "description": "Official documentation detailing system processes and protocols, found within the GSQ GitHub."
+      }
+    },
+    {
+      "id": "GSQ Labs",
+      "label": "GitHub",
+      "properties": {
+        "description": "Experimental projects and initiatives hosted on the GSQ GitHub platform."
+      }
+    },
+    {
+      "id": "S3 Data Lake",
+      "label": "Lake",
+      "properties": {
+        "description": "A comprehensive storage solution created by GDMP System for housing seismic data, knowledgebases, and catalogues."
+      }
+    },
+    {
+      "id": "CKAN Data Catalog",
+      "label": "Lake",
+      "properties": {
+        "description": "A technology that organises datasets in an accessible manner, emerged from the S3 Data Lake."
+      }
+    },
+    {
+      "id": "GSQ Open Data Portal",
+      "label": "Lake",
+      "properties": {
+        "description": "A public interface for accessing geoscience data provided by the CKAN Data Catalogue."
+      }
+    },
+    {
+      "id": "Seismic Data Transfers",
+      "label": "Lake",
+      "properties": {
+        "description": "A method for moving seismic data into the S3 Data Lake."
+      }
+    },
+    {
+      "id": "Knowledgebase",
+      "label": "Lake",
+      "properties": {
+        "description": "A repository of knowledge facilitated by the S3 Data Lake."
+      }
+    },
+    {
+      "id": "GSQ Private Data Portal",
+      "label": "Lake",
+      "properties": {}
+    },
+    {
+      "id": "SOLR Search Engine",
+      "label": "Lake",
+      "properties": {}
+    },
+    {
+      "id": "CKAN API Interface",
+      "label": "Lake",
+      "properties": {}
+    },
+    {
+      "id": "Drupal Outreach",
+      "label": "Lake",
+      "properties": {
+        "description": "A content management system used to disseminate information on the GSQ Open Data Portal."
+      }
+    },
+    {
+      "id": "Statistical Reporting",
+      "label": "Lake",
+      "properties": {
+        "description": "A feature of the GSQ Open Data Portal facilitating the dissemination of statistical data."
+      }
+    },
+    {
+      "id": "GSQ Lodgement Portal",
+      "label": "LP",
+      "properties": {
+        "description": "A platform developed by GDMP System for lodging and managing statistical reports and other related activities."
+      }
+    },
+    {
+      "id": "Statistical Reporting Expansion",
+      "label": "LP",
+      "properties": {
+        "description": "A development that enhances the statistical reporting features of the GSQ Lodgement Portal."
+      }
+    },
+    {
+      "id": "Report Validation",
+      "label": "LP",
+      "properties": {
+        "description": "A process integrated into the GSQ Lodgement Portal for ensuring the accuracy of reports."
+      }
+    },
+    {
+      "id": "Optimisation",
+      "label": "LP",
+      "properties": {
+        "description": "The enhancement of systems and processes for increased efficiency."
+      }
+    },
+    {
+      "id": "Support Capability",
+      "label": "Support",
+      "properties": {
+        "description": "An infrastructure developed by GDMP System to provide various levels of technical support and system testing."
+      }
+    },
+    {
+      "id": "Data Governance Systems",
+      "label": "Support",
+      "properties": {
+        "description": "The structures controlling data quality, accessibility, and policies, emerging from Support Capability."
+      }
+    },
+    {
+      "id": "Level 1 Support",
+      "label": "Support",
+      "properties": {
+        "description": "The initial tier of assistance available within the Support Capability framework."
+      }
+    },
+    {
+      "id": "Vendor Support Arrangements",
+      "label": "Support",
+      "properties": {
+        "description": "Contractual agreements for specialised support services within Support Capability."
+      }
+    },
+    {
+      "id": "Geological Info Inbox",
+      "label": "Support",
+      "properties": {
+        "description": "An inbox system for managing geological inquiries within Support Capability."
+      }
+    },
+    {
+      "id": "Application Testing Systems",
+      "label": "Support",
+      "properties": {
+        "description": "Frameworks for testing applications, part of the Support Capability."
+      }
+    },
+    {
+      "id": "System wide security model",
+      "label": "Support",
+      "properties": {
+        "description": "A comprehensive approach to maintaining system security under Support Capability."
+      }
+    },
+    {
+      "id": "Practice Directions",
+      "label": "Support",
+      "properties": {
+        "description": "Guidelines and instructions emanating from the Data Governance Systems for standardised processes."
+      }
+    },
+    {
+      "id": "GSQ Vocabularies",
+      "label": "Vocabs",
+      "properties": {
+        "description": "A set of terminologies and linguistic expressions curated by GDMP System for standardising geoscience communication."
+      }
+    },
+    {
+      "id": "Prez V3",
+      "label": "Vocabs",
+      "properties": {
+        "description": "A version of a presentation interface connected to the GSQ Vocabularies."
+      }
+    },
+    {
+      "id": "Geofeatures Dataset",
+      "label": "Vocabs",
+      "properties": {
+        "description": "Data collections detailing geological features, produced by Prez V3."
+      }
+    },
+    {
+      "id": "Fuseki Triplestore",
+      "label": "Vocabs",
+      "properties": {
+        "description": "A database for managing RDF data, developed from GSQ Vocabularies."
+      }
+    },
+    {
+      "id": "Geochem Harmonisation",
+      "label": "Vocabs",
+      "properties": {
+        "description": "The process of standardising geochemical data, associated with GSQ Vocabularies."
+      }
+    },
+    {
+      "id": "GSQ Supermodel",
+      "label": "Vocabs",
+      "properties": {
+        "description": "An overarching conceptual framework linked to GSQ Vocabularies."
+      }
+    },
+    {
+      "id": "Geofeatures Semantic Modelling POC",
+      "label": "Vocabs",
+      "properties": {
+        "description": "A proof of concept for the semantic modelling of geological features data from the Geofeatures Dataset."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "d86ad7e8-0099-44e1-83c6-4010ce0eec76",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "GSQ Lodgement Portal",
+      "properties": {}
+    },
+    {
+      "id": "4cd9dc25-481b-4035-a6e6-ede10e259803",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "S3 Data Lake",
+      "properties": {}
+    },
+    {
+      "id": "d54e332e-1801-48c1-9cdd-e2ac51826674",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "Support Capability",
+      "properties": {}
+    },
+    {
+      "id": "26fd9adf-9959-4c66-91d4-19df764bbf5d",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "Geoproperties Database",
+      "properties": {}
+    },
+    {
+      "id": "afa68b92-3163-4565-b434-065faa22fb86",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "Data Science Program",
+      "properties": {}
+    },
+    {
+      "id": "ddac6296-4647-4416-8230-5d5f58aeaee6",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "GSQ Vocabularies",
+      "properties": {}
+    },
+    {
+      "id": "be846f42-4586-46ea-8706-2dca1fea70a6",
+      "source": "GDMP System",
+      "label": "gave rise to",
+      "target": "GSQ GitHub",
+      "properties": {}
+    },
+    {
+      "id": "9af118c4-3623-478e-902f-0555b8972900",
+      "source": "GSQ Lodgement Portal",
+      "label": "gave rise to",
+      "target": "Statistical Reporting Expansion",
+      "properties": {}
+    },
+    {
+      "id": "050c4fcb-4672-41dc-987c-70c89337e276",
+      "source": "GSQ Lodgement Portal",
+      "label": "gave rise to",
+      "target": "Report Validation",
+      "properties": {}
+    },
+    {
+      "id": "e6f89d9f-665d-42a4-868a-cc1fa89ecb78",
+      "source": "GSQ Lodgement Portal",
+      "label": "gave rise to",
+      "target": "Optimisation",
+      "properties": {}
+    },
+    {
+      "id": "f2c3a846-590c-499a-ba87-687c739206b9",
+      "source": "S3 Data Lake",
+      "label": "gave rise to",
+      "target": "Seismic Data Transfers",
+      "properties": {}
+    },
+    {
+      "id": "4f7c9801-2bbb-436c-abef-e2bee248cbae",
+      "source": "S3 Data Lake",
+      "label": "gave rise to",
+      "target": "Knowledgebase",
+      "properties": {}
+    },
+    {
+      "id": "bf353be6-19d7-44b3-8dae-3f5e5cd46127",
+      "source": "S3 Data Lake",
+      "label": "gave rise to",
+      "target": "CKAN Data Catalog",
+      "properties": {}
+    },
+    {
+      "id": "16edd910-0132-4347-a37e-7d50073b4e20",
+      "source": "CKAN Data Catalog",
+      "label": "gave rise to",
+      "target": "GSQ Open Data Portal",
+      "properties": {}
+    },
+    {
+      "id": "48375ca9-a2ff-427e-9234-a7599e099b0b",
+      "source": "CKAN Data Catalog",
+      "label": "gave rise to",
+      "target": "GSQ Private Data Portal",
+      "properties": {}
+    },
+    {
+      "id": "41e3b0df-18be-4f5e-b86c-ecb92ad9ba6b",
+      "source": "CKAN Data Catalog",
+      "label": "gave rise to",
+      "target": "SOLR Search Engine",
+      "properties": {}
+    },
+    {
+      "id": "d03d1cef-8676-4bf4-9e68-db4e796db20f",
+      "source": "CKAN Data Catalog",
+      "label": "gave rise to",
+      "target": "CKAN API Interface",
+      "properties": {}
+    },
+    {
+      "id": "c6e03afd-7510-4c22-b94b-a286a81dd51b",
+      "source": "GSQ Open Data Portal",
+      "label": "gave rise to",
+      "target": "Drupal Outreach",
+      "properties": {}
+    },
+    {
+      "id": "10c5e3c4-63a0-493e-a685-a6e5199feffd",
+      "source": "GSQ Open Data Portal",
+      "label": "gave rise to",
+      "target": "Statistical Reporting",
+      "properties": {}
+    },
+    {
+      "id": "8e16a230-da55-4dc7-91c3-3b031648f1bc",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "Level 1 Support",
+      "properties": {}
+    },
+    {
+      "id": "2bc184be-d5a9-4325-b883-1b5a9794a654",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "Vendor Support Arrangements",
+      "properties": {}
+    },
+    {
+      "id": "3bb9c995-9abe-4508-adaf-713fa9222d5b",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "Geological Info Inbox",
+      "properties": {}
+    },
+    {
+      "id": "477b7666-a7d1-4fe0-b72b-f53baaeb3b8c",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "Application Testing Systems",
+      "properties": {}
+    },
+    {
+      "id": "1a37b900-4792-4728-a20c-315b76941329",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "System wide security model",
+      "properties": {}
+    },
+    {
+      "id": "d432a840-8203-44a3-b036-d90a74b09c49",
+      "source": "Support Capability",
+      "label": "gave rise to",
+      "target": "Data Governance Systems",
+      "properties": {}
+    },
+    {
+      "id": "ca4cde24-0afe-4082-bfa1-0cc60adbe021",
+      "source": "Data Governance Systems",
+      "label": "gave rise to",
+      "target": "Practice Directions",
+      "properties": {}
+    },
+    {
+      "id": "r000027",
+      "source": "Geoproperties Database",
+      "label": "gave rise to",
+      "target": "Geoproperties App",
+      "properties": {}
+    },
+    {
+      "id": "r000028",
+      "source": "Geoproperties App",
+      "label": "gave rise to",
+      "target": "Bulk Uploading Tool",
+      "properties": {}
+    },
+    {
+      "id": "r000029",
+      "source": "Geoproperties Database",
+      "label": "gave rise to",
+      "target": "Redshift Data Warehouse",
+      "properties": {}
+    },
+    {
+      "id": "r000030",
+      "source": "Redshift Data Warehouse",
+      "label": "gave rise to",
+      "target": "Curated Views",
+      "properties": {}
+    },
+    {
+      "id": "r000031",
+      "source": "Curated Views",
+      "label": "gave rise to",
+      "target": "External System Integration",
+      "properties": {}
+    },
+    {
+      "id": "r000032",
+      "source": "Data Science Program",
+      "label": "gave rise to",
+      "target": "AWS Sagemaker",
+      "properties": {}
+    },
+    {
+      "id": "r000033",
+      "source": "AWS Sagemaker",
+      "label": "gave rise to",
+      "target": "Core Rationalisation Tool",
+      "properties": {}
+    },
+    {
+      "id": "r000034",
+      "source": "AWS Sagemaker",
+      "label": "gave rise to",
+      "target": "DevOps / MLOps (TODO)",
+      "properties": {}
+    },
+    {
+      "id": "r000035",
+      "source": "Data Science Program",
+      "label": "gave rise to",
+      "target": "OCR Reports",
+      "properties": {}
+    },
+    {
+      "id": "r000036",
+      "source": "OCR Reports",
+      "label": "gave rise to",
+      "target": "AWS OpenSearch Service",
+      "properties": {}
+    },
+    {
+      "id": "r000037",
+      "source": "AWS OpenSearch Service",
+      "label": "gave rise to",
+      "target": "OCR Report Index",
+      "properties": {}
+    },
+    {
+      "id": "r000038",
+      "source": "AWS OpenSearch Service",
+      "label": "gave rise to",
+      "target": "Digital Librarian POC",
+      "properties": {}
+    },
+    {
+      "id": "r000039",
+      "source": "Data Science Program",
+      "label": "gave rise to",
+      "target": "Value Extraction Research",
+      "properties": {}
+    },
+    {
+      "id": "r000040",
+      "source": "Data Science Program",
+      "label": "gave rise to",
+      "target": "Geoscience ML Projects",
+      "properties": {}
+    },
+    {
+      "id": "r000041",
+      "source": "GSQ Vocabularies",
+      "label": "gave rise to",
+      "target": "Fuseki Triplestore",
+      "properties": {}
+    },
+    {
+      "id": "r000042",
+      "source": "GSQ Vocabularies",
+      "label": "gave rise to",
+      "target": "Prez V3",
+      "properties": {}
+    },
+    {
+      "id": "r000043",
+      "source": "GSQ Vocabularies",
+      "label": "gave rise to",
+      "target": "Geochem Harmonisation",
+      "properties": {}
+    },
+    {
+      "id": "r000044",
+      "source": "GSQ Vocabularies",
+      "label": "gave rise to",
+      "target": "GSQ Supermodel",
+      "properties": {}
+    },
+    {
+      "id": "r000045",
+      "source": "Prez V3",
+      "label": "gave rise to",
+      "target": "Geofeatures Dataset",
+      "properties": {}
+    },
+    {
+      "id": "r000046",
+      "source": "Geofeatures Dataset",
+      "label": "gave rise to",
+      "target": "Geofeatures Semantic Modelling POC",
+      "properties": {}
+    },
+    {
+      "id": "r000047",
+      "source": "GSQ GitHub",
+      "label": "gave rise to",
+      "target": "System Documentation",
+      "properties": {}
+    },
+    {
+      "id": "r000048",
+      "source": "GSQ GitHub",
+      "label": "gave rise to",
+      "target": "GSQ Labs",
+      "properties": {}
+    }
+  ]
+}
